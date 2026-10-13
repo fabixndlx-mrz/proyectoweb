@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17324d">
+    <meta name="description" content="Organiza tu presupuesto, sigue una meta de ahorro y consulta ideas de consumo responsable con Mi Finanzas.">
+    <title>Mi Finanzas | Educación y Control Financiero</title>
+    <link rel="preload" href="assets/fonts/AtkinsonHyperlegible-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <script src="theme-init.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <script src="finanzas.js" defer></script>
+  </head>
+  <body data-page="finanzas">
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html" aria-label="Portal del proyecto, inicio">
+          <span class="brand-copy">
+            <strong>Portal del proyecto</strong>
+            <span>Desarrollo de Software · 3.º B</span>
+          </span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+          <span class="menu-toggle-label">Menú</span>
+          <span class="menu-toggle-lines" aria-hidden="true"></span>
+        </button>
+        <nav class="site-nav" id="site-navigation" aria-label="Navegación principal">
+          <button class="theme-toggle" type="button" aria-pressed="false">
+            <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path>
+            </svg>
+            <span data-theme-label>Cambiar a tema oscuro</span>
+          </button>
+          <a class="nav-link" href="index.html">Currículo</a>
+          <a class="nav-link nav-link-strong is-current" href="finanzas.html" aria-current="page">Mi Finanzas</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <section class="finance-hero section-shell" aria-labelledby="finance-title">
+        <div class="finance-hero-copy">
+          <h1 id="finance-title">Mi Finanzas: Educación y Control Financiero</h1>
+          <p>Administrar el dinero con intención ayuda a tomar decisiones con más tranquilidad. Organiza tus cifras, define una meta y observa cómo cada elección afecta tu presupuesto.</p>
+          <a class="button button-primary" href="#presupuesto">Organizar mi presupuesto</a>
+        </div>
+        <div class="finance-hero-note">
+          <span class="note-rule" aria-hidden="true"></span>
+          <p>Una herramienta educativa para reflexionar sobre tus propios ingresos, gastos y hábitos.</p>
+          <span class="note-caption">Los datos solo viven en esta página.</span>
+        </div>
+      </section>
+
+      <nav class="finance-jump section-shell" aria-label="Áreas de Mi Finanzas">
+        <a href="#presupuesto"><span>01</span>Presupuesto</a>
+        <a href="#ahorro"><span>02</span>Ahorro</a>
+        <a href="#consumo"><span>03</span>Consumo responsable</a>
+        <a href="#resumen"><span>04</span>Resumen</a>
+      </nav>
+
+      <section class="finance-section budget-section" id="presupuesto" aria-labelledby="budget-title">
+        <div class="section-shell">
+          <div class="section-heading finance-heading">
+            <div>
+              <h2 id="budget-title">Tu presupuesto, a la vista.</h2>
+            </div>
+            <p class="section-intro">Ingresa tus montos. Los resultados se actualizan mientras escribes y no se conservan después de recargar.</p>
+          </div>
+
+          <div class="currency-row">
+            <label for="currency">Moneda para mostrar</label>
+            <select id="currency" name="currency">
+              <option value="USD" selected>Dólar estadounidense (USD)</option>
+              <option value="EUR">Euro (EUR)</option>
+              <option value="MXN">Peso mexicano (MXN)</option>
+              <option value="COP">Peso colombiano (COP)</option>
+              <option value="PEN">Sol peruano (PEN)</option>
+              <option value="CLP">Peso chileno (CLP)</option>
+              <option value="ARS">Peso argentino (ARS)</option>
+            </select>
+          </div>
+
+          <div class="budget-layout">
+            <form class="budget-form" id="budget-form" novalidate>
+              <fieldset class="money-group income-group">
+                <legend><span class="form-step">A</span>Ingresos mensuales</legend>
+                <p class="field-intro">Suma el dinero que recibes durante un mes.</p>
+                <div class="field-row">
+                  <label for="income">Ingresos totales</label>
+                  <div class="money-input-wrap">
+                    <span class="currency-symbol" aria-hidden="true">$</span>
+                    <input id="income" name="income" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="income-help income-error">
+                  </div>
+                  <small class="field-help" id="income-help">Si no tienes ingresos este mes, deja el valor en cero.</small>
+                  <small class="field-error" id="income-error"></small>
+                </div>
+              </fieldset>
+
+              <fieldset class="money-group expense-group">
+                <legend><span class="form-step">B</span>Gastos del mes</legend>
+                <p class="field-intro">Registra lo que gastas en cada categoría.</p>
+                <div class="expense-category">
+                  <h3>Gastos necesarios</h3>
+                  <div class="field-row">
+                    <label for="expense-food">Alimentación</label>
+                    <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="expense-food" data-expense="food" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="expense-food-error"></div>
+                    <small class="field-error" id="expense-food-error"></small>
+                  </div>
+                  <div class="field-row">
+                    <label for="expense-transport">Transporte</label>
+                    <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="expense-transport" data-expense="transport" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="expense-transport-error"></div>
+                    <small class="field-error" id="expense-transport-error"></small>
+                  </div>
+                  <div class="field-row">
+                    <label for="expense-services">Servicios básicos</label>
+                    <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="expense-services" data-expense="services" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="expense-services-error"></div>
+                    <small class="field-error" id="expense-services-error"></small>
+                  </div>
+                </div>
+                <div class="expense-category">
+                  <h3>Gastos personales</h3>
+                  <div class="field-row">
+                    <label for="expense-leisure">Entretenimiento y ocio</label>
+                    <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="expense-leisure" data-expense="leisure" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="expense-leisure-error"></div>
+                    <small class="field-error" id="expense-leisure-error"></small>
+                  </div>
+                </div>
+                <div class="expense-category">
+                  <h3>Otros gastos</h3>
+                  <div class="field-row">
+                    <label for="expense-other">Imprevistos y gastos diversos</label>
+                    <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="expense-other" data-expense="other" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="expense-other-error"></div>
+                    <small class="field-error" id="expense-other-error"></small>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+
+            <aside class="budget-results" aria-labelledby="budget-results-title">
+              <div class="results-heading">
+                <h3 id="budget-results-title">Resumen del presupuesto</h3>
+              </div>
+              <dl class="budget-totals">
+                <div><dt>Ingresos totales</dt><dd id="income-total">$0.00</dd></div>
+                <div><dt>Gastos totales</dt><dd id="expenses-total">$0.00</dd></div>
+              </dl>
+              <div class="available-panel" id="available-panel" data-status="neutral">
+                <span>Dinero disponible</span>
+                <output id="available-total" for="income expense-food expense-transport expense-services expense-leisure expense-other">$0.00</output>
+                <p id="balance-message" aria-live="polite">Ingresa tus montos para calcular tu balance.</p>
+              </div>
+              <p class="form-notice">Esta herramienta es educativa. No sustituye asesoría financiera.</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="finance-section savings-section" id="ahorro" aria-labelledby="savings-title">
+        <div class="section-shell">
+          <div class="section-heading finance-heading">
+            <div>
+              <h2 id="savings-title">Ahorra paso a paso.</h2>
+            </div>
+            <p class="section-intro">Compara lo que ya has reunido con la meta que quieres alcanzar.</p>
+          </div>
+
+          <div class="savings-layout">
+            <form class="savings-form" id="savings-form" novalidate>
+              <div class="field-row">
+                <label for="savings-goal">Meta de ahorro</label>
+                <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="savings-goal" name="goal" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ej. 250" aria-describedby="goal-help goal-error"></div>
+                <small class="field-help" id="goal-help">Define una cantidad mayor que cero.</small>
+                <small class="field-error" id="goal-error"></small>
+              </div>
+              <div class="field-row">
+                <label for="savings-current">Ahorro actual</label>
+                <div class="money-input-wrap"><span class="currency-symbol" aria-hidden="true">$</span><input id="savings-current" name="current" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="current-error"></div>
+                <small class="field-error" id="current-error"></small>
+              </div>
+            </form>
+
+            <div class="savings-progress-panel">
+              <div class="savings-amounts">
+                <div><span>Meta</span><strong id="goal-display">Elige una meta</strong></div>
+                <div><span>Acumulado</span><strong id="current-display">$0.00</strong></div>
+              </div>
+              <div class="progress-label-row">
+                <label for="savings-progress">Progreso de ahorro</label>
+                <output id="savings-percent" for="savings-goal savings-current">0%</output>
+              </div>
+              <progress id="savings-progress" max="100" value="0">0%</progress>
+              <p class="savings-message" id="savings-message" aria-live="polite">Ingresa una meta para ver tu progreso.</p>
+              <p class="progress-note" id="progress-note">La barra se detiene al llegar al 100%. El porcentaje muestra el avance total.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="finance-section consumption-section" id="consumo" aria-labelledby="consumption-title">
+        <div class="section-shell">
+          <div class="section-heading finance-heading">
+            <div>
+              <h2 id="consumption-title">Decide con intención.</h2>
+            </div>
+            <p class="section-intro">Pequeños hábitos ayudan a distinguir lo urgente de lo que puede esperar.</p>
+          </div>
+
+          <div class="tips-layout">
+            <div class="tips-intro">
+              <p>Un gasto pensado empieza con una pausa. Usa estas preguntas como guía, no como reglas rígidas.</p>
+              <a class="text-link" href="#resumen">Revisar mi resumen <span class="link-arrow link-arrow-down" aria-hidden="true"></span></a>
+            </div>
+            <div class="tip-list">
+              <details class="tip-item">
+                <summary><span class="tip-number">01</span><span>¿Lo necesito o lo deseo?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Pregúntate qué problema resuelve y si necesitas resolverlo ahora. Un deseo también puede ser válido cuando cabe en tu plan.</p>
+              </details>
+              <details class="tip-item">
+                <summary><span class="tip-number">02</span><span>¿Puedo esperar antes de comprar?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Dejar pasar un poco de tiempo puede ayudarte a decidir con calma y reducir compras impulsivas.</p>
+              </details>
+              <details class="tip-item">
+                <summary><span class="tip-number">03</span><span>¿Comparé opciones y precios?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Compara el precio total, la cantidad, la calidad y las condiciones antes de elegir.</p>
+              </details>
+              <details class="tip-item">
+                <summary><span class="tip-number">04</span><span>¿Hice una lista para comprar?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Anota lo que necesitas y consulta la lista para mantener la compra dentro de tu plan.</p>
+              </details>
+              <details class="tip-item">
+                <summary><span class="tip-number">05</span><span>¿Ya tengo algo que pueda usar?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Revisa lo que tienes en casa antes de comprar algo para una necesidad que ya puedes resolver.</p>
+              </details>
+              <details class="tip-item">
+                <summary><span class="tip-number">06</span><span>¿Puedo pagarlo sin desordenar mi presupuesto?</span><span class="tip-plus" aria-hidden="true"></span></summary>
+                <p>Considera los gastos necesarios y compromisos pendientes. Evita asumir pagos que no puedas cubrir.</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="finance-section summary-section" id="resumen" aria-labelledby="summary-title">
+        <div class="section-shell">
+          <div class="section-heading finance-heading">
+            <div>
+              <h2 id="summary-title">Tu fotografía financiera.</h2>
+            </div>
+            <p class="section-intro">Un resumen de los valores ingresados en esta página, actualizado al cambiar cada campo.</p>
+          </div>
+
+          <div class="summary-layout">
+            <div class="summary-table-wrap">
+              <table class="summary-table">
+                <caption>Ingresos y gastos del presupuesto actual</caption>
+                <thead><tr><th scope="col">Concepto</th><th scope="col">Tipo</th><th scope="col">Monto</th></tr></thead>
+                <tbody id="summary-rows">
+                  <tr><th scope="row">Ingresos mensuales</th><td>Ingreso</td><td>$0.00</td></tr>
+                  <tr><th scope="row">Alimentación</th><td>Gasto necesario</td><td>$0.00</td></tr>
+                  <tr><th scope="row">Transporte</th><td>Gasto necesario</td><td>$0.00</td></tr>
+                  <tr><th scope="row">Servicios básicos</th><td>Gasto necesario</td><td>$0.00</td></tr>
+                  <tr><th scope="row">Entretenimiento y ocio</th><td>Gasto personal</td><td>$0.00</td></tr>
+                  <tr><th scope="row">Imprevistos y gastos diversos</th><td>Otros gastos</td><td>$0.00</td></tr>
+                  <tr class="summary-total"><th scope="row">Dinero disponible</th><td>Balance</td><td>$0.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <aside class="summary-aside" aria-label="Distribución de los gastos">
+              <h3>Distribución de gastos</h3>
+              <p class="summary-aside-intro">Cada barra representa la parte de una categoría dentro de tus gastos totales.</p>
+              <div class="distribution-list" id="distribution-list">
+                <div class="distribution-empty" id="distribution-empty">Añade gastos para ver su distribución.</div>
+              </div>
+              <div class="savings-summary">
+                <span>Meta de ahorro</span><strong id="summary-savings">$0.00 de $0.00</strong>
+              </div>
+              <p class="privacy-note"><span class="privacy-mark" aria-hidden="true"></span>Al recargar la página, los datos ingresados se borran.</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="finance-close" aria-labelledby="close-title">
+        <div class="section-shell close-inner">
+          <div><h2 id="close-title">Un buen plan empieza por mirar tus números.</h2></div>
+          <a class="button button-light" href="#presupuesto">Volver al presupuesto <span class="link-arrow link-arrow-up" aria-hidden="true"></span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="section-shell footer-inner">
+        <a class="brand brand-footer" href="index.html">
+          <span class="brand-copy"><strong>Portal del proyecto</strong><span>Desarrollo de Software</span></span>
+        </a>
+        <p>Proyecto realizado por <strong>Darwin Fabian Quiroz Tejena</strong>.<br>Unidad Educativa Albertina Rivas Medina · 3.º año, paralelo B · Informática.</p>
+        <a class="footer-link" href="index.html">Volver al currículo <span class="link-arrow" aria-hidden="true"></span></a>
+      </div>
+    </footer>
+  </body>
+</html>
