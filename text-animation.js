@@ -4,58 +4,97 @@ const headings = [...document.querySelectorAll("[data-split-text]")];
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 if (headings.length) {
-  const animations = new Map();
-  const splits = new Map();
   const visibleHeadings = new Set();
 
-  const setupHeading = (heading) => {
-    if (splits.has(heading)) {
-      return;
-    }
+  const phraseRotators = headings.map((heading) => {
+    const phrases = [
+      heading.textContent.trim(),
+      ...heading.dataset.phrases.split("|").map((phrase) => phrase.trim())
+    ];
+    let phraseIndex = 0;
+    let split;
+    let animation;
+    let advanceTimer;
+    let cycleId = 0;
 
-    const text = heading.textContent.trim();
-    const split = splitText(heading, {
-      words: { wrap: "clip", class: "split-word" }
-    });
-    splits.set(heading, split);
-    heading.setAttribute("aria-label", text);
-
-    split.addEffect(({ words }) => {
-      const animation = animate(words, {
-        y: [
-          { to: ["100%", "0%"] },
-          { to: "-100%", delay: 1800, duration: 300, ease: "in(3)" }
-        ],
-        duration: 750,
-        ease: "out(3)",
-        delay: stagger(100),
-        loop: true
-      });
-
-      animations.set(heading, animation);
-
-      if (document.hidden || !visibleHeadings.has(heading)) {
-        animation.pause();
+    const updatePlayback = () => {
+      if (!animation) {
+        return;
       }
 
-      return () => {
-        animation.pause();
-        if (animations.get(heading) === animation) {
-          animations.delete(heading);
-        }
-      };
-    });
-  };
-
-  const updatePlayback = () => {
-    animations.forEach((animation, heading) => {
       if (document.hidden || reduceMotion.matches || !visibleHeadings.has(heading)) {
         animation.pause();
       } else {
         animation.play();
       }
-    });
-  };
+    };
+
+    const showPhrase = (index) => {
+      cycleId += 1;
+      window.clearTimeout(advanceTimer);
+      animation?.pause();
+      split?.revert();
+      split = null;
+      animation = null;
+      phraseIndex = index % phrases.length;
+      heading.textContent = phrases[phraseIndex];
+
+      if (reduceMotion.matches) {
+        heading.removeAttribute("aria-label");
+        return;
+      }
+
+      heading.setAttribute("aria-label", phrases[phraseIndex]);
+      split = splitText(heading, {
+        words: { wrap: "clip", class: "split-word" }
+      });
+
+      const currentCycleId = cycleId;
+      let currentAnimation;
+      currentAnimation = animate(split.words, {
+        y: [
+          { to: ["100%", "0%"] },
+          { to: "-100%", delay: 1800, duration: 350, ease: "in(3)" }
+        ],
+        duration: 650,
+        ease: "out(3)",
+        delay: stagger(90),
+        autoplay: false,
+        loop: true,
+        onLoop: () => {
+          if (currentCycleId !== cycleId) {
+            return;
+          }
+
+          currentAnimation.pause();
+          advanceTimer = window.setTimeout(() => {
+            if (currentCycleId === cycleId) {
+              showPhrase(phraseIndex + 1);
+            }
+          }, 180);
+        }
+      });
+      animation = currentAnimation;
+      updatePlayback();
+    };
+
+    showPhrase(phraseIndex);
+    return {
+      heading,
+      updatePlayback,
+      showPhrase: () => showPhrase(phraseIndex),
+      stopForReducedMotion: () => {
+        cycleId += 1;
+        window.clearTimeout(advanceTimer);
+        animation?.pause();
+        split?.revert();
+        animation = null;
+        split = null;
+        heading.textContent = phrases[phraseIndex];
+        heading.removeAttribute("aria-label");
+      }
+    };
+  });
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(({ target, isIntersecting }) => {
@@ -65,29 +104,20 @@ if (headings.length) {
         visibleHeadings.delete(target);
       }
     });
-    updatePlayback();
+    phraseRotators.forEach(({ updatePlayback }) => updatePlayback());
   }, { threshold: 0.2 });
 
-  headings.forEach((heading) => {
-    observer.observe(heading);
-    if (!reduceMotion.matches) {
-      setupHeading(heading);
-    }
-  });
+  headings.forEach((heading) => observer.observe(heading));
 
-  document.addEventListener("visibilitychange", updatePlayback);
+  document.addEventListener("visibilitychange", () => {
+    phraseRotators.forEach(({ updatePlayback }) => updatePlayback());
+  });
   reduceMotion.addEventListener("change", () => {
     if (reduceMotion.matches) {
-      splits.forEach((split, heading) => {
-        split.revert();
-        heading.removeAttribute("aria-label");
-      });
-      splits.clear();
-      animations.clear();
+      phraseRotators.forEach(({ stopForReducedMotion }) => stopForReducedMotion());
       return;
     }
 
-    headings.forEach(setupHeading);
-    updatePlayback();
+    phraseRotators.forEach(({ showPhrase }) => showPhrase());
   });
 }

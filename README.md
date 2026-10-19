@@ -8,7 +8,7 @@ Sitio educativo de Desarrollo de Software realizado por **Darwin Fabian Quiroz T
 - `finanzas.html`: presupuesto, metas de ahorro, consumo responsable y resumen financiero.
 - `styles.css`: estilos adaptables y temas claro y oscuro.
 - `script.js`, `portfolio.js`, `finanzas.js` y `theme-init.js`: navegación, interacción, cálculos financieros y preferencia de tema.
-- `text-animation.js`: animación de texto con Anime.js 4.2.0, cargado desde jsDelivr en las dos páginas.
+- `text-animation.js`: animación con Anime.js 4.2.0 que alterna tres frases relacionadas en cada título principal; la biblioteca se carga desde jsDelivr.
 - `assets/`: tipografía, iconos y sus avisos de licencia.
 
 No requiere instalación de dependencias; la animación Anime.js necesita conexión a internet para cargar desde jsDelivr. Abre `index.html` directamente en un navegador o inicia un servidor estático local, por ejemplo con **Live Server** en Visual Studio Code.

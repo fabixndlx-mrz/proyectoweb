@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Plain static HTML and CSS with native JavaScript; Anime.js 4.2.0 powers the split-text animation on the two page titles.
+Plain static HTML and CSS with native JavaScript; Anime.js 4.2.0 powers the rotating split-text phrases on the two page titles.
 
 ## Users
 
