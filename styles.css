@@ -343,6 +343,16 @@ h4 {
   line-height: 1.04;
 }
 
+.split-word {
+  display: inline-block;
+  overflow: clip;
+  vertical-align: top;
+}
+
+.split-word > span {
+  display: inline-block;
+}
+
 .hero-lede {
   max-width: 52ch;
   margin-bottom: 26px;
